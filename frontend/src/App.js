@@ -17,7 +17,7 @@ function App() {
         setScrapedData(null);
 
         try {
-            const response = await axios.post('http://localhost:5001/api/scrape', { url });
+            const response = await axios.post('https://scrapy-e4my.onrender.com/api/scrape', { url });
             setScrapedData(response.data.data);
             setSessionId(response.data.sessionId);
         } catch (err) {
