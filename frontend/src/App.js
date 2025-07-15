@@ -3,6 +3,7 @@ import axios from 'axios';
 import ScraperForm from './components/ScraperForm';
 import Results from './components/Results';
 import Loader from './components/Loader';
+import config from './config';
 import './App.css';
 
 function App() {
@@ -17,11 +18,18 @@ function App() {
         setScrapedData(null);
 
         try {
-            const response = await axios.post('https://scrapy-e4my.onrender.com/api/scrape', { url });
+            const response = await axios.post(`${config.API_BASE_URL}/api/scrape`, { url });
             setScrapedData(response.data.data);
             setSessionId(response.data.sessionId);
         } catch (err) {
-            setError('Failed to scrape the URL. Please check the URL and try again.');
+            console.error('Scraping error:', err);
+            if (err.response) {
+                setError(`Server error: ${err.response.status} - ${err.response.data?.error || 'Unknown error'}`);
+            } else if (err.request) {
+                setError('Network error: Unable to reach the server. Please check if the backend is running.');
+            } else {
+                setError('Failed to scrape the URL. Please check the URL and try again.');
+            }
         } finally {
             setLoading(false);
         }

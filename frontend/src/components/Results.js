@@ -1,8 +1,9 @@
 import React from 'react';
+import config from '../config';
 
 const Results = ({ data, sessionId }) => {
     const handleDownload = (type) => {
-        window.open(`http://localhost:5001/api/download/${type}/${sessionId}`);
+        window.open(`${config.API_BASE_URL}/api/download/${type}/${sessionId}`);
     };
 
     return (

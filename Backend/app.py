@@ -12,6 +12,13 @@ CORS(app)
 # In-memory storage for scraped data
 scraped_data_storage = {}
 
+@app.route('/', methods=['GET'])
+def health_check():
+    """
+    Health check endpoint
+    """
+    return jsonify({'status': 'Web Scraper API is running', 'version': '1.0.0'})
+
 @app.route('/api/scrape', methods=['POST'])
 def scrape():
     """
@@ -70,4 +77,5 @@ def download_images(session_id):
     return send_file(zip_path, as_attachment=True, download_name='scraped_images.zip')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    port = int(os.environ.get('PORT', 5001))
+    app.run(debug=True, port=port)
